@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ur5_robot</name>
+  <version>0.0.0</version>
+  <description>The ur5_robot package</description>
+  <maintainer email="liuxiao@outlook.com">Liu Xiao</maintainer>
+  <license>TODO</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>robotiq_descriptoon</exec_depend>
+  <exec_depend>robotiq_gazebo</exec_depend>
+  <exec_depend>ur5_description</exec_depend>
+  <exec_depend>ur5_gazebo</exec_depend>
+
+  <export>
+      <metapackage/>
+  </export>
+</package>
