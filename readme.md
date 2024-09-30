@@ -34,6 +34,9 @@ roslaunch ur5_description display.launch
 # display ur5-gripper
 roslaunch ur5_description display_with_gripper.launch
 ```
+![gripper](imgs/gripper.png)
+![ur5](imgs/ur5.png)
+![ur5-gripper](imgs/ur5-gripper.png)
 
 ## Reference
 
