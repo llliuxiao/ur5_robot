@@ -7,8 +7,7 @@
   <arg unless = "$(arg debug)"  name="DEBUG" value="log"/>
 
   <!-- Controllers config -->
-  <rosparam file="$(find ur5_gazebo)/controller/ur5gripper_controllers.yaml"
-            command="load" />
+  <rosparam file="$(find ur5_gazebo)/controller/ur5gripper_controllers.yaml" command="load" />
 
   <!-- Load controllers -->
   <node name="robot_controllers" pkg="controller_manager" type="spawner"

@@ -9,6 +9,6 @@
   
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
   
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ur5_description)/config/ur5.rviz" required="true" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ur5_description)/rviz/ur5.rviz" required="true" />
 
 </launch>
