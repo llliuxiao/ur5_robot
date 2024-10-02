@@ -45,11 +45,11 @@ roslaunch ur5_moveit_config demo_gazebo.launch
 
 (The pkg was created following [detailed tutorial](https://roboticscasual.com/ros-tutorial-how-to-create-a-moveit-config-for-the-ur5-and-a-gripper/#:~:text=Create%20a%20Moveit%20configuration%20package%20with%20the%20Moveit%20Setup%20Assistant.))
 
-**Control ur5 with MotionPlanning Plugin in rviz **
+**Control ur5 with MotionPlanning Plugin in rviz**
 
 ![ur5_demo](imgs/ur5_demo.gif)
 
-**Control robotiq-gripper with MotionPlanning Plugin in rviz **
+**Control robotiq-gripper with MotionPlanning Plugin in rviz**
 
 ![gripper_demo](imgs/gripper_demo.gif)
 
