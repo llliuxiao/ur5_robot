@@ -9,6 +9,7 @@
 
   <!-- Start Gazebo paused to allow the controllers to pickup the initial pose -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch" pass_all_args="true">
+    <arg name="world_name" value="$(arg world_name)" />
     <arg name="paused" value="true"/>
   </include>
 
@@ -19,7 +20,8 @@
   <arg name="unpause" value="$(eval '' if arg('paused') else '-unpause')" />
 
   <!-- Spawn the robot in Gazebo -->
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot $(arg unpause) $(arg world_pose) $(arg initial_joint_positions)"
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -param robot_description -model robot $(arg unpause) $(arg world_pose) $(arg initial_joint_positions)"
     respawn="false" output="screen" />
 
   <!-- Load the controller parameters onto the parameter server -->
