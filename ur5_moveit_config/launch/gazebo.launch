@@ -24,10 +24,12 @@
 
   <!-- Load the controller parameters onto the parameter server -->
   <rosparam file="$(find ur5_moveit_config)/config/gazebo_controllers.yaml" />
-  <include file="$(dirname)/ros_controllers.launch"/>
+<!--   <include file="$(dirname)/ros_controllers.launch"/> -->
 
   <!-- Spawn the Gazebo ROS controllers -->
-  <node name="gazebo_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller" />
+  <rosparam file="$(find ur5_moveit_config)/config/ros_controllers.yaml" command="load"/>
+  <node name="gazebo_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+        args="joint_state_controller ur5_arm_controller gripper_controller" />
 
   <!-- Given the published joint states, publish tf for the robot links -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />

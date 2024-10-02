@@ -5,7 +5,7 @@
 <!-- =================================================================================== -->
 <robot name="ur5">
     <gazebo>
-        <plugin filename="libgazebo_ros_control.so" name="ros_control">
+        <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
             <!--robotNamespace>/</robotNamespace-->
             <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->
         </plugin>
@@ -23,9 +23,9 @@
       <chargeVoltage>16.41</chargeVoltage>
     </plugin>
 -->
-        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-            <robotNamespace>/</robotNamespace>
-        </plugin>
+        <!--plugin name="ros_control" filename="libgazebo_ros_control.so"-->
+            <!--robotNamespace>/</robotNamespace-->
+        <!--/plugin-->
     </gazebo>
     <!-- measured from model -->
     <!--property name="shoulder_height" value="0.089159" /-->
@@ -250,7 +250,7 @@
     <transmission name="shoulder_pan_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="shoulder_pan_joint">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
         <actuator name="shoulder_pan_motor">
             <mechanicalReduction>1</mechanicalReduction>
@@ -260,7 +260,7 @@
     <transmission name="shoulder_lift_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="shoulder_lift_joint">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
         <actuator name="shoulder_lift_motor">
             <mechanicalReduction>1</mechanicalReduction>
@@ -270,7 +270,7 @@
     <transmission name="elbow_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="elbow_joint">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
         <actuator name="elbow_motor">
             <mechanicalReduction>1</mechanicalReduction>
@@ -280,7 +280,7 @@
     <transmission name="wrist_1_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="wrist_1_joint">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
         <actuator name="wrist_1_motor">
             <mechanicalReduction>1</mechanicalReduction>
@@ -290,7 +290,7 @@
     <transmission name="wrist_2_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="wrist_2_joint">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
         <actuator name="wrist_2_motor">
             <mechanicalReduction>1</mechanicalReduction>
@@ -300,7 +300,7 @@
     <transmission name="wrist_3_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="wrist_3_joint">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
         <actuator name="wrist_3_motor">
             <mechanicalReduction>1</mechanicalReduction>
@@ -335,6 +335,9 @@
     <!-- Robotiq Coupler -->
     <!--  + Height added by the coupler: 8mm -->
     <!--  + Reference frame: at the middle (4mm) -->
+    <material name="flat_black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+    </material>
     <link name="robotiq_coupler">
         <visual>
             <geometry>
@@ -609,7 +612,7 @@
         <actuator name="robotiq_85_left_knuckle_motor">
             <mechanicalReduction>1</mechanicalReduction>
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-            <!-- <hardwareInterface>EfforJointInterface</hardwareInterface> -->
+            <!-- <hardwareInterface>EffortJointInterface</hardwareInterface> -->
         </actuator>
     </transmission>
     <!-- Mimic joints -->
