@@ -14,6 +14,7 @@ cd grasp/src
 catkin_init_workspace
 
 git clone https://github.com/llliuxiao/ur5_robot.git
+git clone https://github.com/nilseuropa/realsense_ros_gazebo.git
 
 cd ~/grasp_ws
 catkin_make
@@ -58,4 +59,5 @@ roslaunch ur5_moveit_config demo_gazebo.launch
 
 - https://github.com/utecrobotics/ur5
 - https://github.com/utecrobotics/robotiq
+- https://github.com/nilseuropa/realsense_ros_gazebo
 - https://roboticscasual.com
