@@ -27,6 +27,42 @@
             <!--robotNamespace>/</robotNamespace-->
         <!--/plugin-->
     </gazebo>
+    <!-- T265 Fisheye:
+
+  gazebo_ros_camera supports only plumb_bob
+  D: [-0.007419134024530649, 0.041209351271390915, -0.03811917081475258, 0.006366158835589886, 0.0]
+
+  <distortionK1>-0.007419134024530649</distortionK1>
+  <distortionK2>0.041209351271390915</distortionK2>
+  <distortionK3>-0.03811917081475258</distortionK3>
+  <distortionT1>0.006366158835589886</distortionT1>
+  <distortionT2>0.0</distortionT2>
+
+       [fx'  0  cx' Tx]
+   P = [ 0  fy' cy' Ty]
+       [ 0   0   1   0]
+
+   P : [ 285.5480041503906, 0.0, 416.00531005859375, 0.0,
+         0.0, 285.3793029785156, 403.38909912109375, 0.0,
+         0.0, 0.0, 1.0, 0.0 ]
+
+  <CxPrime>416.00531005859375</CxPrime>
+
+       [fx  0 cx]
+   K = [ 0 fy cy]
+       [ 0  0  1]
+
+   K : [ 285.5480041503906, 0.0, 416.00531005859375,
+         0.0, 285.3793029785156, 403.38909912109375,
+         0.0, 0.0, 1.0]
+
+  <Cx>16.00531005859375</Cx>
+  <Cy>403.38909912109375</Cy>
+
+  -->
+    <!-- INTEL REALSENSE T265 -->
+    <!-- INTEL REALSENSE D435 -->
+    <!-- INTEL REALSENSE R200 -->
     <!-- measured from model -->
     <!--property name="shoulder_height" value="0.089159" /-->
     <!--property name="shoulder_offset" value="0.13585" /-->
@@ -326,6 +362,243 @@
         <parent link="wrist_3_link" />
         <child link="tool0" />
     </joint>
+    <link name="support">
+        <visual>
+            <geometry>
+                <cylinder length="0.03" radius="0.02" />
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <material name="black">
+                <color rgba="0.8 0.2 0.0 0.8" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.03" radius="0.02" />
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+        </collision>
+        <inertial>
+            <mass value="0.1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+    <joint name="support2wrist_3_link" type="fixed">
+        <parent link="wrist_3_link" />
+        <child link="support" />
+        <origin xyz="0 0.05 0.05" />
+    </joint>
+    <gazebo reference="support">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <!-- camera body, with origin at bottom screw mount -->
+    <joint name="d435_joint" type="fixed">
+        <origin rpy="0 0 1.57 " xyz="0 0 0.01" />
+        <parent link="support" />
+        <child link="d435_bottom_screw_frame" />
+    </joint>
+    <link name="d435_bottom_screw_frame" />
+    <joint name="d435_link_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0.0175 0.0125" />
+        <parent link="d435_bottom_screw_frame" />
+        <child link="d435_link" />
+    </joint>
+    <link name="d435_link">
+        <visual>
+            <origin rpy="1.5707963267948966 0 1.5707963267948966" xyz="0.0149 -0.0175 0" />
+            <geometry>
+                <mesh filename="package://realsense_ros_gazebo/meshes/realsense_d435.stl" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 -0.0175 0" />
+            <geometry>
+                <box size="0.02505 0.09 0.025" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.564" />
+            <origin rpy="0 0 0" xyz="0 -0.0175 0" />
+            <inertia ixx="0.000410075" ixy="0" ixz="0" iyy="5.8867617499999996e-05" iyz="0" izz="5.8867617499999996e-05" />
+        </inertial>
+    </link>
+    <!-- camera depth joints and links -->
+    <joint name="d435_depth_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <parent link="d435_link" />
+        <child link="d435_depth_frame" />
+    </joint>
+    <link name="d435_depth_frame" />
+    <joint name="d435_depth_optical_joint" type="fixed">
+        <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0" />
+        <parent link="d435_depth_frame" />
+        <child link="d435_depth_optical_frame" />
+    </joint>
+    <link name="d435_depth_optical_frame" />
+    <!-- camera left IR joints and links -->
+    <joint name="d435_left_ir_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0.0 0" />
+        <parent link="d435_depth_frame" />
+        <child link="d435_left_ir_frame" />
+    </joint>
+    <link name="d435_left_ir_frame" />
+    <joint name="d435_left_ir_optical_joint" type="fixed">
+        <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0" />
+        <parent link="d435_left_ir_frame" />
+        <child link="d435_left_ir_optical_frame" />
+    </joint>
+    <link name="d435_left_ir_optical_frame" />
+    <!-- camera right IR joints and links -->
+    <joint name="d435_right_ir_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 -0.05 0" />
+        <parent link="d435_depth_frame" />
+        <child link="d435_right_ir_frame" />
+    </joint>
+    <link name="d435_right_ir_frame" />
+    <joint name="d435_right_ir_optical_joint" type="fixed">
+        <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0" />
+        <parent link="d435_right_ir_frame" />
+        <child link="d435_right_ir_optical_frame" />
+    </joint>
+    <link name="d435_right_ir_optical_frame" />
+    <!-- camera color joints and links -->
+    <joint name="d435_color_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0.015 0" />
+        <parent link="d435_depth_frame" />
+        <child link="d435_color_frame" />
+    </joint>
+    <link name="d435_color_frame" />
+    <joint name="d435_color_optical_joint" type="fixed">
+        <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0" />
+        <parent link="d435_color_frame" />
+        <child link="d435_color_optical_frame" />
+    </joint>
+    <link name="d435_color_optical_frame" />
+    <!-- gazebo plugin -->
+    <gazebo reference="d435_link">
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+        <mu2>1</mu2>
+        <fdir1>0 0 0</fdir1>
+        <kp>1e+13</kp>
+        <kd>1</kd>
+        <sensor name="d435_color" type="camera">
+            <camera name="d435">
+                <horizontal_fov>1.2112585008840648</horizontal_fov>
+                <image>
+                    <width>640</width>
+                    <height>480</height>
+                    <format>RGB_INT8</format>
+                </image>
+                <clip>
+                    <near>0.1</near>
+                    <far>100</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise>
+            </camera>
+            <always_on>1</always_on>
+            <update_rate>30</update_rate>
+            <visualize>1</visualize>
+        </sensor>
+        <sensor name="d435_ired1" type="camera">
+            <camera name="d435">
+                <horizontal_fov>1.4870205226991688</horizontal_fov>
+                <image>
+                    <width>1280</width>
+                    <height>720</height>
+                    <format>L_INT8</format>
+                </image>
+                <clip>
+                    <near>0.1</near>
+                    <far>100</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.05</stddev>
+                </noise>
+            </camera>
+            <always_on>1</always_on>
+            <update_rate>90</update_rate>
+            <visualize>0</visualize>
+        </sensor>
+        <sensor name="d435_ired2" type="camera">
+            <camera name="d435">
+                <horizontal_fov>1.4870205226991688</horizontal_fov>
+                <image>
+                    <width>1280</width>
+                    <height>720</height>
+                    <format>L_INT8</format>
+                </image>
+                <clip>
+                    <near>0.1</near>
+                    <far>100</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.05</stddev>
+                </noise>
+            </camera>
+            <always_on>1</always_on>
+            <update_rate>90</update_rate>
+            <visualize>0</visualize>
+        </sensor>
+        <sensor name="d435_depth" type="depth">
+            <camera name="d435">
+                <horizontal_fov>1.4870205226991688</horizontal_fov>
+                <image>
+                    <width>1280</width>
+                    <height>720</height>
+                </image>
+                <clip>
+                    <near>0.1</near>
+                    <far>100</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.100</stddev>
+                </noise>
+            </camera>
+            <always_on>1</always_on>
+            <update_rate>90</update_rate>
+            <visualize>0</visualize>
+        </sensor>
+    </gazebo>
+    <gazebo>
+        <plugin filename="librealsense_gazebo_plugin.so" name="d435">
+            <prefix>d435_</prefix>
+            <depthUpdateRate>10</depthUpdateRate>
+            <colorUpdateRate>10</colorUpdateRate>
+            <infraredUpdateRate>10</infraredUpdateRate>
+            <depthTopicName>depth/image_raw</depthTopicName>
+            <depthCameraInfoTopicName>depth/camera_info</depthCameraInfoTopicName>
+            <colorTopicName>color/image_raw</colorTopicName>
+            <colorCameraInfoTopicName>color/camera_info</colorCameraInfoTopicName>
+            <infrared1TopicName>infra1/image_raw</infrared1TopicName>
+            <infrared1CameraInfoTopicName>infra1/camera_info</infrared1CameraInfoTopicName>
+            <infrared2TopicName>infra2/image_raw</infrared2TopicName>
+            <infrared2CameraInfoTopicName>infra2/camera_info</infrared2CameraInfoTopicName>
+            <colorOpticalframeName>d435_color_optical_frame</colorOpticalframeName>
+            <depthOpticalframeName>d435_depth_optical_frame</depthOpticalframeName>
+            <infrared1OpticalframeName>d435_infrared1_optical_frame</infrared1OpticalframeName>
+            <infrared2OpticalframeName>d435_infrared2_optical_frame</infrared2OpticalframeName>
+            <rangeMinDepth>0.2</rangeMinDepth>
+            <rangeMaxDepth>10.0</rangeMaxDepth>
+            <pointCloud>false</pointCloud>
+            <pointCloudTopicName>depth/color/points</pointCloudTopicName>
+            <pointCloudCutoff>0.25</pointCloudCutoff>
+            <pointCloudCutoffMax>9.0</pointCloudCutoffMax>
+        </plugin>
+    </gazebo>
     <link name="world" />
     <joint name="world_joint" type="fixed">
         <parent link="world" />
@@ -335,15 +608,14 @@
     <!-- Robotiq Coupler -->
     <!--  + Height added by the coupler: 8mm -->
     <!--  + Reference frame: at the middle (4mm) -->
-    <material name="flat_black">
-        <color rgba="0.0 0.0 0.0 1.0" />
-    </material>
     <link name="robotiq_coupler">
         <visual>
             <geometry>
                 <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl" />
             </geometry>
-            <material name="flat_black" />
+            <material name="flat_black">
+                <color rgba="0.0 0.0 0.0 1.0" />
+            </material>
         </visual>
         <collision>
             <geometry>
